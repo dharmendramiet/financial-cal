@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.herokuapp.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Personal Finance Calculator</h1>
+            <p class="header-description">Calculate your SIP investments and SWP withdrawals with professional insights</p>
+        </header>
+
+        <div class="calculator-tabs">
+            <button class="tab-btn active" data-tab="sip">SIP Calculator</button>
+            <button class="tab-btn" data-tab="swp">SWP Calculator</button>
+        </div>
+
+        <!-- SIP Calculator -->
+        <div class="calculator-content active" id="sip-calculator">
+            <div class="calculator-section">
+                <h2>SIP Calculator</h2>
+                <p class="section-description">Calculate your Systematic Investment Plan returns</p>
+                
+                <form class="calculator-form" id="sip-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="sip-initial-corpus">Initial Corpus (₹)</label>
+                            <input type="number" id="sip-initial-corpus" class="form-control" min="1000" max="100000000" step="1000" placeholder="100,000">
+                            <small class="form-help">Minimum: ₹1,000</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="sip-monthly-contribution">Monthly Contribution (₹)</label>
+                            <input type="number" id="sip-monthly-contribution" class="form-control" min="500" max="1000000" step="500" placeholder="5,000" required>
+                            <small class="form-help">Minimum: ₹500</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="sip-stepup-percentage">Yearly Step Up (%)</label>
+                            <input type="number" id="sip-stepup-percentage" class="form-control" min="0" max="50" step="0.1" placeholder="10">
+                            <small class="form-help">Annual increase in SIP amount</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="sip-expected-return">Expected Return (% p.a.)</label>
+                            <input type="number" id="sip-expected-return" class="form-control" min="0" max="50" step="0.1" placeholder="12" required>
+                            <small class="form-help">Annual expected return rate</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="sip-years">Years of Contribution</label>
+                            <input type="number" id="sip-years" class="form-control" min="1" max="50" placeholder="10" required>
+                            <small class="form-help">Investment duration</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Calculate SIP</button>
+                        <button type="button" class="btn btn--outline" id="sip-reset">Reset</button>
+                    </div>
+                </form>
+                
+                <div class="results-section hidden" id="sip-results">
+                    <h3>SIP Results</h3>
+                    <div class="results-summary">
+                        <div class="result-card">
+                            <h4>Final Balance</h4>
+                            <p class="result-value" id="sip-final-balance">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Total Investment</h4>
+                            <p class="result-value" id="sip-total-investment">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Returns Accumulated</h4>
+                            <p class="result-value" id="sip-returns-accumulated">₹0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <canvas id="sip-chart"></canvas>
+                    </div>
+                    
+                    <div class="pdf-actions">
+                        <button class="btn btn--primary" id="sip-download-pdf">Download SIP Report (PDF)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SWP Calculator -->
+        <div class="calculator-content" id="swp-calculator">
+            <div class="calculator-section">
+                <h2>SWP Calculator</h2>
+                <p class="section-description">Calculate your Systematic Withdrawal Plan</p>
+                
+                <form class="calculator-form" id="swp-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="swp-initial-corpus">Initial Corpus (₹)</label>
+                            <input type="number" id="swp-initial-corpus" class="form-control" min="1000" max="100000000" step="1000" placeholder="1,000,000" required>
+                            <small class="form-help">Starting investment amount</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="swp-monthly-withdrawal">Monthly Withdrawal (₹)</label>
+                            <input type="number" id="swp-monthly-withdrawal" class="form-control" min="500" max="1000000" step="500" placeholder="8,000" required>
+                            <small class="form-help">Monthly withdrawal amount</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="swp-inflation-percentage">Yearly Inflation (%)</label>
+                            <input type="number" id="swp-inflation-percentage" class="form-control" min="0" max="50" step="0.1" placeholder="6">
+                            <small class="form-help">Annual inflation rate</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="swp-expected-return">Expected Return (% p.a.)</label>
+                            <input type="number" id="swp-expected-return" class="form-control" min="0" max="50" step="0.1" placeholder="10" required>
+                            <small class="form-help">Annual expected return rate</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="swp-years">Years of Withdrawal</label>
+                            <input type="number" id="swp-years" class="form-control" min="1" max="50" placeholder="15" required>
+                            <small class="form-help">Withdrawal duration</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Calculate SWP</button>
+                        <button type="button" class="btn btn--outline" id="swp-reset">Reset</button>
+                    </div>
+                </form>
+                
+                <div class="results-section hidden" id="swp-results">
+                    <h3>SWP Results</h3>
+                    <div class="results-summary">
+                        <div class="result-card">
+                            <h4>Final Balance</h4>
+                            <p class="result-value" id="swp-final-balance">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Total Withdrawal</h4>
+                            <p class="result-value" id="swp-total-withdrawal">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Returns Accumulated</h4>
+                            <p class="result-value" id="swp-returns-accumulated">₹0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <canvas id="swp-chart"></canvas>
+                    </div>
+                    
+                    <div class="swp-table-container">
+                        <h4>Year-wise Breakdown</h4>
+                        <div class="table-wrapper">
+                            <table class="breakdown-table" id="swp-breakdown-table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Monthly Withdrawal</th>
+                                        <th>Total Withdrawal</th>
+                                        <th>Returns Earned</th>
+                                        <th>Balance Left</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-actions">
+                        <button class="btn btn--primary" id="swp-download-pdf">Download SWP Report (PDF)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
