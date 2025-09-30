@@ -10,15 +10,46 @@
     <script src="https://html2canvas.herokuapp.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
+    <div class="creator-info-banner">
+        <div class="creator-inner">
+          <span>Created and maintained by Dharmendra Singh</span>
+          <span class="separator">•</span>
+          <span>Email to <a href="mailto:dharmendramiet@gmail.com">dharmendramiet@gmail.com</a> for any questions or suggestions</span>
+        </div>
+      </div>
+      
+      <style>
+        .creator-info-banner {
+          display: flex;
+          justify-content: center;   /* horizontal center */
+          align-items: center;       /* vertical center */
+          height: 6vh;             /* full viewport height */
+          text-align: center;
+          color: green;              /* green text */
+          font-size: 14px;      /* optional, for readability */
+        }
+      
+        .creator-info-banner a {
+          color:blue;              /* green link as well */
+          text-decoration: none;
+        }
+      
+        .creator-info-banner a:hover {
+          text-decoration: underline;
+        }
+      </style>
+      
+      
     <div class="container">
         <header class="header">
             <h1>Personal Finance Calculator</h1>
-            <p class="header-description">Calculate your SIP investments and SWP withdrawals with professional insights</p>
+            <p class="header-description">Calculate your SIP investments, SWP withdrawals, and retirement planning with professional insights</p>
         </header>
 
         <div class="calculator-tabs">
             <button class="tab-btn active" data-tab="sip">SIP Calculator</button>
             <button class="tab-btn" data-tab="swp">SWP Calculator</button>
+            <button class="tab-btn" data-tab="retirement">Retirement Calculator</button>
         </div>
 
         <!-- SIP Calculator -->
@@ -181,6 +212,180 @@
                     
                     <div class="pdf-actions">
                         <button class="btn btn--primary" id="swp-download-pdf">Download SWP Report (PDF)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Retirement Calculator -->
+        <div class="calculator-content" id="retirement-calculator">
+            <div class="calculator-section">
+                <h2>Retirement Calculator</h2>
+                <p class="section-description">Plan your retirement with comprehensive analysis and insights</p>
+                
+                <form class="calculator-form" id="retirement-form">
+                    <div class="form-grid retirement-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-current-age">Current Age</label>
+                            <input type="number" id="retirement-current-age" class="form-control" min="18" max="70" placeholder="30" required>
+                            <small class="form-help">Your current age (18-70)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-retirement-age">Retirement Age</label>
+                            <input type="number" id="retirement-retirement-age" class="form-control" min="40" max="80" placeholder="60" required>
+                            <small class="form-help">Planned retirement age (40-80)</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-current-savings">Current Savings/Corpus (₹)</label>
+                            <input type="number" id="retirement-current-savings" class="form-control" min="0" max="100000000" step="1000" placeholder="500,000" required>
+                            <small class="form-help">Current retirement savings</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-monthly-savings">Monthly Savings (₹)</label>
+                            <input type="number" id="retirement-monthly-savings" class="form-control" min="500" max="1000000" step="500" placeholder="15,000" required>
+                            <small class="form-help">Monthly contribution to retirement fund</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-salary-growth">Expected Salary Growth (% p.a.)</label>
+                            <input type="number" id="retirement-salary-growth" class="form-control" min="0" max="50" step="0.1" placeholder="8" required>
+                            <small class="form-help">Annual salary/savings growth rate</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-expected-return">Expected Return (% p.a.)</label>
+                            <input type="number" id="retirement-expected-return" class="form-control" min="0" max="50" step="0.1" placeholder="12" required>
+                            <small class="form-help">Expected investment return rate</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-current-expenses">Current Monthly Expenses (₹)</label>
+                            <input type="number" id="retirement-current-expenses" class="form-control" min="1000" max="1000000" step="1000" placeholder="40,000" required>
+                            <small class="form-help">Today's monthly living expenses</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-lifestyle-factor">Retirement Lifestyle Factor (%)</label>
+                            <select id="retirement-lifestyle-factor" class="form-control" required>
+                                <option value="">Select lifestyle factor</option>
+                                <option value="70">70% - Conservative lifestyle</option>
+                                <option value="80">80% - Moderate lifestyle</option>
+                                <option value="100">100% - Current lifestyle</option>
+                                <option value="120">120% - Enhanced lifestyle</option>
+                            </select>
+                            <small class="form-help">Retirement expenses vs current expenses</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-inflation-rate">Inflation Rate (% p.a.)</label>
+                            <input type="number" id="retirement-inflation-rate" class="form-control" min="0" max="20" step="0.1" placeholder="6" required>
+                            <small class="form-help">Expected annual inflation rate</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="retirement-life-expectancy">Life Expectancy</label>
+                            <input type="number" id="retirement-life-expectancy" class="form-control" min="75" max="100" placeholder="85" required>
+                            <small class="form-help">Expected life expectancy (75-100)</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Calculate Retirement Plan</button>
+                        <button type="button" class="btn btn--outline" id="retirement-reset">Reset</button>
+                    </div>
+                </form>
+                
+                <div class="results-section hidden" id="retirement-results">
+                    <h3>Retirement Analysis Results</h3>
+                    
+                    <!-- Retirement Readiness Score -->
+                    <div class="readiness-score-container">
+                        <h4>Retirement Readiness Score</h4>
+                        <div class="readiness-score">
+                            <div class="score-circle">
+                                <span id="readiness-score-value">0%</span>
+                            </div>
+                            <div class="score-description">
+                                <p id="readiness-score-text">Calculating...</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="readiness-progress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-summary retirement-summary">
+                        <div class="result-card">
+                            <h4>Years to Retirement</h4>
+                            <p class="result-value" id="retirement-years-to-retirement">0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Corpus at Retirement</h4>
+                            <p class="result-value" id="retirement-corpus-at-retirement">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Monthly Income Possible</h4>
+                            <p class="result-value" id="retirement-monthly-income">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Monthly Expenses Needed</h4>
+                            <p class="result-value" id="retirement-monthly-expenses">₹0</p>
+                        </div>
+                        <div class="result-card">
+                            <h4>Monthly Surplus/Deficit</h4>
+                            <p class="result-value" id="retirement-surplus-deficit">₹0</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Section -->
+                    <div class="charts-section">
+                        <div class="chart-row">
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="retirement-corpus-chart"></canvas>
+                            </div>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="retirement-income-expense-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <canvas id="retirement-sustainability-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommendations Section -->
+                    <div class="recommendations-section">
+                        <h4>Recommendations</h4>
+                        <div id="retirement-recommendations" class="recommendations-list">
+                            <!-- Recommendations will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Breakdown Table -->
+                    <div class="retirement-table-container">
+                        <h4>Year-wise Retirement Projection</h4>
+                        <div class="table-wrapper">
+                            <table class="breakdown-table" id="retirement-breakdown-table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Age</th>
+                                        <th>Annual Savings</th>
+                                        <th>Corpus Balance</th>
+                                        <th>Annual Expenses</th>
+                                        <th>Corpus Sustainability</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-actions">
+                        <button class="btn btn--primary" id="retirement-download-pdf">Download Retirement Report (PDF)</button>
                     </div>
                 </div>
             </div>
